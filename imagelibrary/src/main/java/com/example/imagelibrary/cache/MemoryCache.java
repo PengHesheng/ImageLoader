@@ -3,14 +3,17 @@ package com.example.imagelibrary.cache;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+import com.example.imagelibrary.utils.HashKeyUtils;
+
 /**
+ * 内存缓存
  * @author 14512 on 2018/9/22
  */
 public class MemoryCache implements ImageCache {
     /**
      * 图片缓存
      */
-    LruCache<String, Bitmap> mImageCache;
+    private LruCache<String, Bitmap> mImageCache;
 
     public MemoryCache() {
         initImageCache();
@@ -31,11 +34,11 @@ public class MemoryCache implements ImageCache {
 
     @Override
     public void put(String url, Bitmap bitmap) {
-        mImageCache.put(url, bitmap);
+        mImageCache.put(HashKeyUtils.hashKeyFromUrl(url), bitmap);
     }
 
     @Override
     public Bitmap get(String url) {
-        return mImageCache.get(url);
+        return mImageCache.get(HashKeyUtils.hashKeyFromUrl(url));
     }
 }
