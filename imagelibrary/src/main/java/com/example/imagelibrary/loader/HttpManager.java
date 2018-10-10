@@ -1,9 +1,9 @@
 package com.example.imagelibrary.loader;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.imagelibrary.cache.ImageCache;
 
@@ -22,6 +22,7 @@ public enum  HttpManager {
      * 枚举单例
      */
     INSTANCE;
+    private static final String TAG = "HttpManager";
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
     private static final int MAXIMUM_POLL_SIZE = CPU_COUNT * 2 + 1;
@@ -38,8 +39,7 @@ public enum  HttpManager {
 
     private Handler mHandler;
     public void download(Task task) {
-        Context context = task.mContext;
-        mHandler = new Handler(context.getMainLooper());
+        mHandler = task.mHandler;
         ImageCache cache = task.mCache;
         LoaderResult result = task.mResult;
         String url = result.mUrl;
@@ -64,6 +64,7 @@ public enum  HttpManager {
             LoaderResult result = mTask.mResult;
             HttpLoader loader = mTask.mHttpLoader;
             result.mBitmap = loader.download(result.mUrl);
+            Log.d(TAG, "bitmap=" + result.mBitmap);
             mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_HTTP, result).sendToTarget();
         }
     }

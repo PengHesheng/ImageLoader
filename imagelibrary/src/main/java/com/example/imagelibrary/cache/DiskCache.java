@@ -37,6 +37,11 @@ public class DiskCache implements ImageCache {
     public DiskCache(Context context) {
         mContext = context;
         mCacheDir = getCacheDir();
+        try {
+            mDiskLruCache = DiskLruCache.open(mCacheDir, 1, 1, DISK_CACHE_SIZE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,7 +81,6 @@ public class DiskCache implements ImageCache {
             }
         }
         try {
-            mDiskLruCache = DiskLruCache.open(mCacheDir, 1, 1, DISK_CACHE_SIZE);
             String key = HashKeyUtils.hashKeyFromUrl(url);
             DiskLruCache.Editor editor = mDiskLruCache.edit(key);
             if (editor != null) {

@@ -1,6 +1,6 @@
 package com.example.imagelibrary.loader;
 
-import android.content.Context;
+import android.os.Handler;
 
 import com.example.imagelibrary.cache.ImageCache;
 
@@ -9,13 +9,13 @@ import com.example.imagelibrary.cache.ImageCache;
  * @author 14512 on 2018/10/10
  */
 public class Task {
-    public Context mContext;
+    public Handler mHandler;
     public ImageCache mCache;
     public HttpLoader mHttpLoader;
     public LoaderResult mResult;
 
-    public Task(Context context, ImageCache cache, HttpLoader httpLoader, LoaderResult result) {
-        this.mContext = context;
+    public Task(Handler handler, ImageCache cache, HttpLoader httpLoader, LoaderResult result) {
+        this.mHandler = handler;
         this.mCache = cache;
         this.mHttpLoader = httpLoader;
         this.mResult = result;

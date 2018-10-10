@@ -2,6 +2,7 @@ package com.example.imagelibrary.loader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.imagelibrary.utils.CloseUtils;
 
@@ -14,11 +15,12 @@ import java.net.URL;
 /**
  * @author 14512 on 2018/10/10
  */
-public class HttpURLConnectionLoader implements HttpLoader {
+public class HttpUrlConnectionLoader implements HttpLoader {
+    private static final String TAG = "HttpUrlConnectionLoader";
     private static final int IO_BUFFER_SIZE = 8 * 1024;
     private HttpURLConnection mConnection;
 
-    public HttpURLConnectionLoader() {
+    public HttpUrlConnectionLoader() {
     }
 
     @Override
@@ -28,10 +30,10 @@ public class HttpURLConnectionLoader implements HttpLoader {
         try {
             final URL url = new URL(urlStr);
             mConnection = (HttpURLConnection) url.openConnection();
-             bis = new BufferedInputStream(mConnection.getInputStream(),
+            bis = new BufferedInputStream(mConnection.getInputStream(),
                     IO_BUFFER_SIZE);
             bitmap = BitmapFactory.decodeStream(bis);
-
+            Log.d(TAG, "bitmap=" + bitmap);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

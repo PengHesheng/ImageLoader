@@ -13,7 +13,7 @@ public final class ImageLoader {
 
     }
 
-    public LoaderManger with(Context context) {
+    public static LoaderManger with(Context context) {
         return LoaderManger.get(context);
     }
 

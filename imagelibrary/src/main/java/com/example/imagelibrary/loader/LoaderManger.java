@@ -17,7 +17,6 @@ import com.example.imagelibrary.cache.ImageCache;
 public final class LoaderManger {
     private static final String TAG = "LoaderManager";
     private static LoaderManger INSTANCE;
-    private Context mContext;
     private ResultHandler mHandler;
     private ImageCache mCache;
     private HttpLoader mDefaultHttpLoader;
@@ -35,10 +34,9 @@ public final class LoaderManger {
     }
 
     private LoaderManger(Context context) {
-        this.mContext = context;
-        mHandler = new ResultHandler(context.getMainLooper());
+        mHandler = new ResultHandler(Looper.getMainLooper());
         mCache = new DefaultCache(context);
-        mDefaultHttpLoader = new HttpURLConnectionLoader();
+        mDefaultHttpLoader = new HttpUrlConnectionLoader();
     }
 
     public LoaderManger load(String url) {
@@ -63,7 +61,7 @@ public final class LoaderManger {
 
     public void into(ImageView imageView) {
         mResult.mImageView = imageView;
-        HttpManager.INSTANCE.download(new Task(mContext, mCache, mDefaultHttpLoader, mResult));
+        HttpManager.INSTANCE.download(new Task(mHandler, mCache, mDefaultHttpLoader, mResult));
     }
 
 
@@ -80,6 +78,7 @@ public final class LoaderManger {
                     handleResult((LoaderResult) msg.obj, false);
                     break;
                 case LoaderResult.RESULT_SUCCESS_FROM_HTTP:
+                    Log.d(TAG, "handleMessage http");
                     handleResult((LoaderResult) msg.obj, true);
                     break;
                 default:

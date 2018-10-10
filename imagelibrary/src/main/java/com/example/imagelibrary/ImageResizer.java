@@ -6,17 +6,18 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.FileDescriptor;
+import java.io.InputStream;
 
 /**
  * @author 14512 on 2018/10/9
  */
-public class ImageResizer {
+public final class ImageResizer {
     private static final String TAG = "ImageResizer";
 
     public ImageResizer() {
     }
 
-    public Bitmap deFromResource(Resources res, int resId,
+    public static Bitmap deFromResource(Resources res, int resId,
                                                   int reqWidth, int reqHeight) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -26,7 +27,16 @@ public class ImageResizer {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
-    public Bitmap deFromFileDescriptor(FileDescriptor fd,
+    public static Bitmap deFromInputStream(InputStream is, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(is, null, options);
+        options.inSampleSize = calculationInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(is);
+    }
+
+    public static Bitmap deFromFileDescriptor(FileDescriptor fd,
                                                         int reqWidth, int reqHeight) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -43,7 +53,7 @@ public class ImageResizer {
      * @param reqHeight
      * @return
      */
-    private int calculationInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private static int calculationInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         if (reqWidth == 0 || reqHeight == 0) {
             return 1;
         }
