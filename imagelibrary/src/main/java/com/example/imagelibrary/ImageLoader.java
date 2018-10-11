@@ -2,6 +2,7 @@ package com.example.imagelibrary;
 
 import android.content.Context;
 
+import com.example.imagelibrary.config.LoaderConfig;
 import com.example.imagelibrary.loader.LoaderManger;
 
 /**
@@ -14,7 +15,11 @@ public final class ImageLoader {
     }
 
     public static LoaderManger with(Context context) {
-        return LoaderManger.get(context);
+        return LoaderManger.get(new LoaderConfig.Builder(context).build());
+    }
+
+    public static LoaderManger with(LoaderConfig config) {
+        return LoaderManger.get(config);
     }
 
 

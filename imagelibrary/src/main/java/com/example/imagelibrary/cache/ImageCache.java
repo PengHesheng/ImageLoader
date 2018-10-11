@@ -20,4 +20,16 @@ public interface ImageCache {
      * @return
      */
     Bitmap get(String url);
+
+    /**
+     * 清楚所有的缓存
+     * @return
+     */
+    @Deprecated
+    boolean clearAll();
+
+    /**
+     * @return 缓存大小
+     */
+    long cacheSize();
 }

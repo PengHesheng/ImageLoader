@@ -1,4 +1,4 @@
-package com.example.imagelibrary;
+package com.example.imagelibrary.utils;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

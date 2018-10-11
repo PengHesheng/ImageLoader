@@ -41,4 +41,15 @@ public class MemoryCache implements ImageCache {
     public Bitmap get(String url) {
         return mImageCache.get(HashKeyUtils.hashKeyFromUrl(url));
     }
+
+    @Override
+    public boolean clearAll() {
+        mImageCache.evictAll();
+        return true;
+    }
+
+    @Override
+    public long cacheSize() {
+        return mImageCache.size();
+    }
 }

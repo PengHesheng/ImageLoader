@@ -1,6 +1,5 @@
 package com.example.imagelibrary.loader;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,8 +7,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.example.imagelibrary.cache.DefaultCache;
-import com.example.imagelibrary.cache.ImageCache;
+import com.example.imagelibrary.config.LoaderConfig;
 
 /**
  * @author 14512 on 2018/10/10
@@ -18,25 +16,23 @@ public final class LoaderManger {
     private static final String TAG = "LoaderManager";
     private static LoaderManger INSTANCE;
     private ResultHandler mHandler;
-    private ImageCache mCache;
-    private HttpLoader mDefaultHttpLoader;
+    private LoaderConfig mConfig;
     private LoaderResult mResult = new LoaderResult();
 
-    public static LoaderManger get(Context context) {
+    public static LoaderManger get(LoaderConfig config) {
         if (INSTANCE == null) {
             synchronized (LoaderManger.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new LoaderManger(context);
+                    INSTANCE = new LoaderManger(config);
                 }
             }
         }
         return INSTANCE;
     }
 
-    private LoaderManger(Context context) {
-        mHandler = new ResultHandler(Looper.getMainLooper());
-        mCache = new DefaultCache(context);
-        mDefaultHttpLoader = new HttpUrlConnectionLoader();
+    private LoaderManger(LoaderConfig config) {
+        this.mHandler = new ResultHandler(Looper.getMainLooper());
+        this.mConfig = config;
     }
 
     public LoaderManger load(String url) {
@@ -44,24 +40,10 @@ public final class LoaderManger {
         return this;
     }
 
-    public LoaderManger setImageCache(ImageCache imageCache) {
-        mCache = imageCache;
-        return this;
-
-    }
-
-    public LoaderManger setPlaceholder(int resId) {
-        return this;
-    }
-
-    public LoaderManger setLoader(HttpLoader httpLoader) {
-        mDefaultHttpLoader = httpLoader;
-        return this;
-    }
 
     public void into(ImageView imageView) {
         mResult.mImageView = imageView;
-        HttpManager.INSTANCE.download(new Task(mHandler, mCache, mDefaultHttpLoader, mResult));
+        HttpManager.INSTANCE.download(new Task(mHandler, mConfig, mResult));
     }
 
 

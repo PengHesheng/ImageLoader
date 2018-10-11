@@ -29,4 +29,16 @@ public class DefaultCache implements ImageCache {
         }
         return bitmap;
     }
+
+    @Override
+    public boolean clearAll() {
+        mMemoryCache.clearAll();
+        mDiskCache.clearAll();
+        return false;
+    }
+
+    @Override
+    public long cacheSize() {
+        return mDiskCache.cacheSize();
+    }
 }

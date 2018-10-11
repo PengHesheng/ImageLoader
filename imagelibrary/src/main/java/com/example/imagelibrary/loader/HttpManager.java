@@ -39,16 +39,8 @@ public enum  HttpManager {
 
     private Handler mHandler;
     public void download(Task task) {
-        mHandler = task.mHandler;
-        ImageCache cache = task.mCache;
-        LoaderResult result = task.mResult;
-        String url = result.mUrl;
-        Bitmap bitmap = cache.get(url);
-        if (bitmap != null) {
-            result.mBitmap = bitmap;
-            mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_CACHE, result).sendToTarget();
-            return;
-        }
+        mHandler = task.getHandler();
+        //TODO 线程池根据传进的参数而改变？？？
         EXECUTOR_POOL.execute(new DownloadThread(task));
     }
 
@@ -61,8 +53,16 @@ public enum  HttpManager {
 
         @Override
         public void run() {
-            LoaderResult result = mTask.mResult;
-            HttpLoader loader = mTask.mHttpLoader;
+            ImageCache cache = mTask.getConfig().getImageCache();
+            LoaderResult result = mTask.getLoaderResult();
+            String url = result.mUrl;
+            Bitmap bitmap = cache.get(url);
+            if (bitmap != null) {
+                result.mBitmap = bitmap;
+                mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_CACHE, result).sendToTarget();
+                return;
+            }
+            HttpLoader loader = mTask.getConfig().getHttpLoader();
             result.mBitmap = loader.download(result.mUrl);
             Log.d(TAG, "bitmap=" + result.mBitmap);
             mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_HTTP, result).sendToTarget();

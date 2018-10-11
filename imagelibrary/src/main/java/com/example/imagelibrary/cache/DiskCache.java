@@ -69,6 +69,16 @@ public class DiskCache implements ImageCache {
 //        return BitmapFactory.decodeFile(CACHE_DIR + url);
     }
 
+    @Override
+    public boolean clearAll() {
+        return true;
+    }
+
+    @Override
+    public long cacheSize() {
+        return mDiskLruCache.size();
+    }
+
     /**
      * 使用DiskLruCache缓存
      * @param url
@@ -80,15 +90,22 @@ public class DiskCache implements ImageCache {
                 return;
             }
         }
+        OutputStream os = null;
         try {
             String key = HashKeyUtils.hashKeyFromUrl(url);
             DiskLruCache.Editor editor = mDiskLruCache.edit(key);
             if (editor != null) {
-                OutputStream outputStream = editor.newOutputStream(DISK_CACHE_INDEX);
-
+                os = editor.newOutputStream(DISK_CACHE_INDEX);
+                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)) {
+                    editor.commit();
+                } else {
+                    editor.abort();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            CloseUtils.closeQuietly(os);
         }
     }
 
