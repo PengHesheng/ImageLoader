@@ -23,7 +23,7 @@ import java.util.Objects;
  * 物理设备缓存
  * @author 14512 on 2018/9/22
  */
-public class DiskCache implements ImageCache {
+class DiskCache implements ImageCache {
     private static final String CACHE_DIR = "bitmap";
     /**
      * 50M
@@ -34,7 +34,7 @@ public class DiskCache implements ImageCache {
     private File mCacheDir;
     private DiskLruCache mDiskLruCache;
 
-    public DiskCache(Context context) {
+    DiskCache(Context context) {
         mContext = context;
         mCacheDir = getCacheDir();
         try {

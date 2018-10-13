@@ -11,10 +11,10 @@ import java.io.InputStream;
 /**
  * @author 14512 on 2018/10/9
  */
-public final class ImageResizer {
-    private static final String TAG = "ImageResizer";
+public final class ImageResizerUtils {
+    private static final String TAG = "ImageResizerUtils";
 
-    public ImageResizer() {
+    public ImageResizerUtils() {
     }
 
     public static Bitmap deFromResource(Resources res, int resId,

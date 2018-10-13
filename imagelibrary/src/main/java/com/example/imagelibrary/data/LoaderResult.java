@@ -1,4 +1,4 @@
-package com.example.imagelibrary.loader;
+package com.example.imagelibrary.data;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -9,18 +9,17 @@ import android.widget.ImageView;
 public class LoaderResult {
     public static final int RESULT_SUCCESS_FROM_CACHE = 1;
     public static final int RESULT_SUCCESS_FROM_HTTP = 2;
+    public static final int RESULT_SUCCESS_FROM_RESOURCE = 3;
 
     public ImageView mImageView;
-    public String mUrl;
     public Bitmap mBitmap;
+    private RequestMode mRequestMode;
 
-    public LoaderResult(ImageView imageView, String url, Bitmap bitmap) {
-        this.mImageView = imageView;
-        this.mUrl = url;
-        this.mBitmap = bitmap;
+    public LoaderResult(RequestMode requestMode) {
+        this.mRequestMode = requestMode;
     }
 
-    public LoaderResult() {
-
+    public RequestMode getRequestMode() {
+        return mRequestMode;
     }
 }

@@ -1,8 +1,8 @@
-package com.example.imagelibrary.loader;
+package com.example.imagelibrary.data;
 
 import android.os.Handler;
 
-import com.example.imagelibrary.config.LoaderConfig;
+import com.example.imagelibrary.config.LoaderConfiguration;
 
 /**
  * 每一个请求视为一个任务，包装了所有需要的信息
@@ -10,12 +10,12 @@ import com.example.imagelibrary.config.LoaderConfig;
  */
 public class Task {
     private Handler mHandler;
-    private LoaderConfig mConfig;
     private LoaderResult mResult;
+    private LoaderConfiguration mConfiguration;
 
-    public Task(Handler handler, LoaderConfig config, LoaderResult result) {
+    public Task(Handler handler, LoaderConfiguration configuration, LoaderResult result) {
         this.mHandler = handler;
-        this.mConfig = config;
+        this.mConfiguration = configuration;
         this.mResult = result;
     }
 
@@ -23,11 +23,11 @@ public class Task {
         return mHandler;
     }
 
-    public LoaderConfig getConfig() {
-        return mConfig;
-    }
-
     public LoaderResult getLoaderResult() {
         return mResult;
+    }
+
+    public LoaderConfiguration getConfiguration() {
+        return mConfiguration;
     }
 }

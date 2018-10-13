@@ -9,13 +9,13 @@ import com.example.imagelibrary.utils.HashKeyUtils;
  * 内存缓存
  * @author 14512 on 2018/9/22
  */
-public class MemoryCache implements ImageCache {
+class MemoryCache implements ImageCache {
     /**
      * 图片缓存
      */
     private LruCache<String, Bitmap> mImageCache;
 
-    public MemoryCache() {
+    MemoryCache() {
         initImageCache();
     }
 

@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * @author 14512 on 2018/10/10
  */
-public class HttpUrlConnectionLoader implements HttpLoader {
+public final class HttpUrlConnectionLoader implements HttpLoader {
     private static final String TAG = "HttpUrlConnectionLoader";
     private static final int IO_BUFFER_SIZE = 8 * 1024;
     private HttpURLConnection mConnection;

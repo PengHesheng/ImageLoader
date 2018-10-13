@@ -1,11 +1,14 @@
-package com.example.imagelibrary.loader;
+package com.example.imagelibrary.manager;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.imagelibrary.data.LoaderResult;
 import com.example.imagelibrary.cache.ImageCache;
+import com.example.imagelibrary.data.Task;
+import com.example.imagelibrary.loader.HttpLoader;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -53,18 +56,22 @@ public enum  HttpManager {
 
         @Override
         public void run() {
-            ImageCache cache = mTask.getConfig().getImageCache();
+            ImageCache cache = mTask.getConfiguration().getImageCache();
             LoaderResult result = mTask.getLoaderResult();
-            String url = result.mUrl;
+            String url = (String) result.getRequestMode().getValue();
             Bitmap bitmap = cache.get(url);
             if (bitmap != null) {
                 result.mBitmap = bitmap;
-                mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_CACHE, result).sendToTarget();
+                mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_HTTP, result).sendToTarget();
                 return;
             }
-            HttpLoader loader = mTask.getConfig().getHttpLoader();
-            result.mBitmap = loader.download(result.mUrl);
-            Log.d(TAG, "bitmap=" + result.mBitmap);
+            HttpLoader loader = mTask.getConfiguration().getHttpLoader();
+            bitmap = loader.download(url);
+            if (bitmap != null) {
+                cache.put(url, bitmap);
+            }
+            result.mBitmap = bitmap;
+            Log.d(TAG, "bitmap=" + result.mBitmap + " url=" + url);
             mHandler.obtainMessage(LoaderResult.RESULT_SUCCESS_FROM_HTTP, result).sendToTarget();
         }
     }
