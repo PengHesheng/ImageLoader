@@ -7,8 +7,10 @@ import android.util.Log;
 import com.example.imagelibrary.cache.ImageCache;
 import com.example.imagelibrary.config.LoaderConfiguration;
 import com.example.imagelibrary.data.LoaderResult;
-import com.example.imagelibrary.data.RequestMode;
 import com.example.imagelibrary.loader.HttpLoader;
+import com.example.imagelibrary.policy.ResRequestPolicy;
+import com.example.imagelibrary.policy.UriRequestPolicy;
+import com.example.imagelibrary.policy.UrlRequestPolicy;
 
 /**
  * @author 14512 on 2018/10/13
@@ -40,28 +42,22 @@ public final class RequestManager implements IRequestMode<DisplayManager> {
     @Override
     public DisplayManager load(String url) {
         Log.d(TAG, "string url");
-        RequestMode requestMode = new RequestMode(url.getClass(), url);
-        LoaderResult result = new LoaderResult(requestMode);
-        mLoaderConfiguration.setResult(result);
-        return DisplayManager.get().init(mLoaderConfiguration);
+        LoaderResult result = new LoaderResult(url);
+        return DisplayManager.get().init(mLoaderConfiguration, new UrlRequestPolicy(), result);
     }
 
     @Override
     public DisplayManager load(Uri uri) {
         Log.d(TAG, "Uri uri");
-        RequestMode requestMode = new RequestMode(uri.getClass(), uri);
-        LoaderResult result = new LoaderResult(requestMode);
-        mLoaderConfiguration.setResult(result);
-        return DisplayManager.get().init(mLoaderConfiguration);
+        LoaderResult result = new LoaderResult(uri);
+        return DisplayManager.get().init(mLoaderConfiguration, new UriRequestPolicy(), result);
     }
 
     @Override
     public DisplayManager load(int resId) {
         Log.d(TAG, "int resId");
-        RequestMode requestMode = new RequestMode(Integer.valueOf(resId).getClass(), resId);
-        LoaderResult result = new LoaderResult(requestMode);
-        mLoaderConfiguration.setResult(result);
-        return DisplayManager.get().init(mLoaderConfiguration);
+        LoaderResult result = new LoaderResult(resId);
+        return DisplayManager.get().init(mLoaderConfiguration, new ResRequestPolicy(), result);
     }
 
     public RequestManager setImageCache(ImageCache imageCache) {

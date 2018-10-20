@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.imagelibrary.cache.DefaultCache;
 import com.example.imagelibrary.cache.ImageCache;
-import com.example.imagelibrary.data.LoaderResult;
 import com.example.imagelibrary.loader.HttpLoader;
 import com.example.imagelibrary.loader.HttpUrlConnectionLoader;
 
@@ -16,7 +15,6 @@ public class LoaderConfiguration {
     private ImageCache mImageCache;
     private HttpLoader mHttpLoader;
     private int threadCount;
-    private LoaderResult mResult;
 
     public LoaderConfiguration(Context context) {
         mContext = context;
@@ -41,10 +39,6 @@ public class LoaderConfiguration {
         return mImageCache;
     }
 
-    public LoaderResult getResult() {
-        return mResult;
-    }
-
     public void setImageCache(ImageCache imageCache) {
         mImageCache = imageCache;
     }
@@ -57,7 +51,4 @@ public class LoaderConfiguration {
         this.threadCount = threadCount;
     }
 
-    public void setResult(LoaderResult result) {
-        mResult = result;
-    }
 }

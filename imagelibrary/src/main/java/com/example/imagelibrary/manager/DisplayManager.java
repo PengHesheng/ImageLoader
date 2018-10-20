@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.example.imagelibrary.config.LoaderConfiguration;
 import com.example.imagelibrary.data.LoaderResult;
 import com.example.imagelibrary.data.Task;
+import com.example.imagelibrary.policy.RequestPolicy;
 
 /**
  * @author 14512 on 2018/10/12
@@ -18,6 +19,8 @@ public class DisplayManager {
     private static final String TAG = "DisplayManager";
     private LoaderConfiguration mConfiguration;
     private ResultHandler mHandler;
+    private RequestPolicy mRequestPolicy;
+    private LoaderResult mResult;
 
     private DisplayManager() {
     }
@@ -32,18 +35,18 @@ public class DisplayManager {
         return displayManager;
     }
 
-    DisplayManager init(LoaderConfiguration configuration) {
+    DisplayManager init(LoaderConfiguration configuration, RequestPolicy requestPolicy, LoaderResult result) {
         this.mConfiguration = configuration;
         this.mHandler = new ResultHandler(mConfiguration.getContext().getMainLooper());
+        this.mRequestPolicy = requestPolicy;
+        this.mResult = result;
         return this;
     }
 
     public void into(ImageView imageView) {
-        LoaderResult result = mConfiguration.getResult();
-        Log.d(TAG, result.getRequestMode().getValue().toString());
-        result.mImageView = imageView;
-        Task task = new Task(mHandler, mConfiguration, mConfiguration.getResult());
-        LoaderManger.get().load(task);
+        mResult.mImageView = imageView;
+        Task task = new Task(mHandler, mConfiguration, mResult);
+        mRequestPolicy.request(task);
     }
 
     private static class ResultHandler extends Handler {
@@ -72,7 +75,7 @@ public class DisplayManager {
     private static void handleResultFromResource(LoaderResult result) {
         ImageView imageView = result.mImageView;
         if (imageView != null) {
-            imageView.setImageResource((Integer) result.getRequestMode().getValue());
+            imageView.setImageResource((Integer) result.getUrl());
         } else {
             throwNullException();
         }

@@ -30,4 +30,5 @@ public class Task {
     public LoaderConfiguration getConfiguration() {
         return mConfiguration;
     }
+
 }

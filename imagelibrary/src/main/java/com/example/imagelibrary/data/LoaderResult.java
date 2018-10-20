@@ -13,13 +13,13 @@ public class LoaderResult {
 
     public ImageView mImageView;
     public Bitmap mBitmap;
-    private RequestMode mRequestMode;
+    private Object mUrl;
 
-    public LoaderResult(RequestMode requestMode) {
-        this.mRequestMode = requestMode;
+    public LoaderResult(Object url) {
+        this.mUrl = url;
     }
 
-    public RequestMode getRequestMode() {
-        return mRequestMode;
+    public Object getUrl() {
+        return mUrl;
     }
 }

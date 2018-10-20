@@ -58,7 +58,7 @@ public enum  HttpManager {
         public void run() {
             ImageCache cache = mTask.getConfiguration().getImageCache();
             LoaderResult result = mTask.getLoaderResult();
-            String url = (String) result.getRequestMode().getValue();
+            String url = (String) result.getUrl();
             Bitmap bitmap = cache.get(url);
             if (bitmap != null) {
                 result.mBitmap = bitmap;
